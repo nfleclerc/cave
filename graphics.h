@@ -2,6 +2,7 @@
 #define GRAPHICS_H
 
 #include <map>
+
 #include <string>
 #include <SDL.h>
 
