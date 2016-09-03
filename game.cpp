@@ -1,6 +1,8 @@
 #include <SDL.h>
 #include <stdio.h>
 #include <algorithm>
+#include <iostream>
+#include <SDL_image.h>
 #include "game.h"
 #include "graphics.h"
 #include "input.h"
@@ -20,7 +22,9 @@ Game::Game()
 void Game::draw(Graphics &graphics) 
 {
 	graphics.clear();
-	player.draw(graphics, 100, 100);
+	level.draw(graphics);
+	player.draw(graphics);
+	std::cout << "ERROR: " << IMG_GetError() << std::endl;
 	graphics.flip();
 }
 
@@ -29,9 +33,9 @@ void Game::gameLoop()
 	Graphics graphics;
 	Input input;
 	SDL_Event event;
-	player = Sprite(graphics, 
-		"MyChar.png", 
-		0, 0, 16, 16, 100, 100);
+	player = Player(graphics, 100, 100);
+	level = Level("map1", Vector2(100, 100), graphics);
+	
 	
 	int LAST_UPDATE_TIME = SDL_GetTicks();
 	while (true)
@@ -50,8 +54,17 @@ void Game::gameLoop()
 				return;
 			}
 		}
-		if (input.wasKeyPressed(SDL_SCANCODE_ESCAPE) == true) {
+		if (input.wasKeyPressed(SDL_SCANCODE_ESCAPE)) {
 			return;
+		}
+		if (input.isKeyHeld(SDL_SCANCODE_LEFT)) {
+			player.moveLeft();
+		}
+		if (input.isKeyHeld(SDL_SCANCODE_RIGHT)) {
+			player.moveRight();
+		}
+		if (!input.isKeyHeld(SDL_SCANCODE_LEFT) && !input.isKeyHeld(SDL_SCANCODE_RIGHT)) {
+			player.stopMoving();
 		}
 		const int CURRENT_TIME = SDL_GetTicks();
 		int ELAPSED_TIME = CURRENT_TIME - LAST_UPDATE_TIME;
@@ -63,7 +76,8 @@ void Game::gameLoop()
 
 void Game::update(float elapsedTime)
 {
-
+	player.update(elapsedTime);
+	level.update(elapsedTime);
 }
 
 Game::~Game() {

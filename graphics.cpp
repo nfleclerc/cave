@@ -13,7 +13,8 @@ Graphics::Graphics() {
 SDL_Surface* Graphics::loadImage(const std::string &filepath) {
 	if (spriteSheets.count(filepath) == 0) {
 		spriteSheets[filepath] = IMG_Load(filepath.c_str());
-			std::cout << "ERROR: " << IMG_GetError() << std::endl;
+
+		std::cout << "ERROR: " << IMG_GetError() << std::endl;
 	}
 	return spriteSheets[filepath];
 }

@@ -18,6 +18,9 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="sprite.cpp" />
+    <ClCompile Include="animatedsprite.cpp" />
+    <ClCompile Include="player.cpp" />
+    <ClCompile Include="level.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graphics.h">
@@ -28,12 +31,26 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="sprite.h" />
     <ClInclude Include="globals.h" />
+    <ClInclude Include="R:\Downloads\SDL2_image-devel-2.0.1-VC (2)\SDL2_image-2.0.1\include\SDL_image.h" />
+    <ClInclude Include="animatedsprite.h" />
+    <ClInclude Include="player.h" />
+    <ClInclude Include="level.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="MyChar.png" />
-    <Image Include="MyChar.bmp" />
+    <Image Include="Debug\MyChar.png" />
+    <Image Include="bkBlue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="libjpeg-9.dll" />
+    <None Include="libtiff-5.dll" />
+    <None Include="libwebp-4.dll" />
+    <None Include="SDL2.dll" />
+    <None Include="SDL2_image.dll" />
+    <None Include="zlib1.dll" />
+    <None Include="R:\Downloads\SDL2_image-devel-2.0.1-VC\SDL2_image-2.0.1\lib\x86\libpng16-16.dll" />
   </ItemGroup>
 </Project>

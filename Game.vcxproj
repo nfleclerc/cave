@@ -73,7 +73,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Link>
       <AdditionalDependencies>SDL2_image.lib;SDL2.lib;SDL2main.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>NotSet</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -88,6 +88,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="animatedsprite.cpp" />
+    <ClCompile Include="level.cpp" />
+    <ClCompile Include="player.cpp" />
     <ClCompile Include="sprite.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="graphics.cpp" />
@@ -95,7 +98,11 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="animatedsprite.h" />
     <ClInclude Include="globals.h" />
+    <ClInclude Include="level.h" />
+    <ClInclude Include="player.h" />
+    <ClInclude Include="R:\Downloads\SDL2_image-devel-2.0.1-VC (2)\SDL2_image-2.0.1\include\SDL_image.h" />
     <ClInclude Include="sprite.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="graphics.h" />
@@ -106,10 +113,20 @@
     <ResourceCompile Include="Game.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="MyChar.bmp" />
+    <Image Include="bkBlue.png" />
+    <Image Include="Debug\MyChar.png" />
     <Image Include="MyChar.png">
       <DeploymentContent>false</DeploymentContent>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="libjpeg-9.dll" />
+    <None Include="libtiff-5.dll" />
+    <None Include="libwebp-4.dll" />
+    <None Include="R:\Downloads\SDL2_image-devel-2.0.1-VC\SDL2_image-2.0.1\lib\x86\libpng16-16.dll" />
+    <None Include="SDL2.dll" />
+    <None Include="SDL2_image.dll" />
+    <None Include="zlib1.dll" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

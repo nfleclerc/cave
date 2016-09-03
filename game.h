@@ -1,7 +1,8 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "sprite.h"
+#include "player.h"
+#include "level.h"
 
 class Graphics;
 
@@ -13,7 +14,8 @@ private:
 	void gameLoop();
 	void draw(Graphics &graphics);
 	void update(float elapsedTime);
-	Sprite player;
+	Player player;
+	Level level;
 };
 
 #endif GAME_H
