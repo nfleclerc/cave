@@ -21,6 +21,8 @@
     <ClCompile Include="animatedsprite.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="level.cpp" />
+    <ClCompile Include="tinyxml2.cpp" />
+    <ClCompile Include="tile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graphics.h">
@@ -35,6 +37,8 @@
     <ClInclude Include="animatedsprite.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="level.h" />
+    <ClInclude Include="tinyxml2.h" />
+    <ClInclude Include="tile.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />
@@ -43,6 +47,7 @@
     <Image Include="MyChar.png" />
     <Image Include="Debug\MyChar.png" />
     <Image Include="bkBlue.png" />
+    <Image Include="PrtCave.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libjpeg-9.dll" />
@@ -52,5 +57,6 @@
     <None Include="SDL2_image.dll" />
     <None Include="zlib1.dll" />
     <None Include="R:\Downloads\SDL2_image-devel-2.0.1-VC\SDL2_image-2.0.1\lib\x86\libpng16-16.dll" />
+    <None Include="map1.tmx" />
   </ItemGroup>
 </Project>

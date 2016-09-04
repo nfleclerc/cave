@@ -41,4 +41,5 @@ SDL_Renderer* Graphics::getRenderer() const
 
 Graphics::~Graphics() {
 	SDL_DestroyWindow(window);
+	SDL_DestroyRenderer(renderer);
 }
