@@ -105,6 +105,7 @@
     <ClInclude Include="level.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="R:\Downloads\SDL2_image-devel-2.0.1-VC (2)\SDL2_image-2.0.1\include\SDL_image.h" />
+    <ClInclude Include="rectangle.h" />
     <ClInclude Include="sprite.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="graphics.h" />

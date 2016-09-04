@@ -7,6 +7,27 @@ namespace globals {
 	const float SPRITESCALE = 2.0;
 }
 
+namespace sides {
+	enum Side {
+		LEFT, RIGHT, TOP, BOTTOM, NONE
+	};
+	inline Side getOppositeSide(Side side) {
+		switch (side)
+		{
+		case sides::LEFT:
+			return sides::RIGHT;
+		case sides::RIGHT:
+			return sides::LEFT;
+		case sides::TOP:
+			return sides::BOTTOM;
+		case sides::BOTTOM:
+			return sides::TOP;
+		default:
+			break;
+		}
+	}
+}
+
 enum Direction {
 	LEFT,
 	RIGHT,
@@ -24,6 +45,7 @@ struct Vector2 {
 		return Vector2();
 	}
 };
+
 
 #endif // !GLOBALS_H
 

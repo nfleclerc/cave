@@ -13,7 +13,7 @@ Level::Level()
 {
 }
 
-Level::Level(std::string mapName, Vector2 spawnPoint, Graphics & graphics) :
+Level::Level(std::string mapName, Vector2 spawnPoint, Graphics &graphics) :
 	mapName(mapName), 
 	spawnPoint(spawnPoint),
 	size(Vector2())
@@ -37,6 +37,25 @@ void Level::draw(Graphics & graphics)
 		tileList.at(i).draw(graphics);
 	}
 }
+
+std::vector<Rectangle> Level::checkTileCollisions(const Rectangle & rectangle)
+{
+	std::vector<Rectangle> others;
+	for (int i = 0; i < collisionRects.size(); i++)
+	{
+		if (collisionRects.at(i).collidesWith(rectangle)) {
+			others.push_back(rectangle);
+		}
+	}
+	return others;
+}
+
+const Vector2 Level::getPlayerSpawnPoint() const
+{
+	return spawnPoint;
+}
+
+
 
 void Level::loadMap(std::string mapName, Graphics & graphics)
 {
@@ -149,6 +168,55 @@ void Level::loadMap(std::string mapName, Graphics & graphics)
 				}
 			}
 			pLayer = pLayer->NextSiblingElement("layer");
+		}
+	}
+
+
+	XMLElement* pObjectGroup = mapNode->FirstChildElement("objectgroup");
+	if (pObjectGroup != NULL) {
+		while (pObjectGroup) {
+			const char* name = pObjectGroup->Attribute("name");
+			std::stringstream stream;
+			stream << name;
+			if (stream.str() == "collisions") {
+				XMLElement* pObject = pObjectGroup->FirstChildElement("object");
+				if (pObject != NULL) {
+					while (pObject) {
+						float x, y, width, height;
+						x = pObject->FloatAttribute("x");
+						y = pObject->FloatAttribute("y");
+						width = pObject->FloatAttribute("width");
+						height = pObject->FloatAttribute("height");
+						collisionRects.push_back(Rectangle(
+							std::ceil(x) * globals::SPRITESCALE, 
+							std::ceil(y) * globals::SPRITESCALE,
+							std::ceil(width) * globals::SPRITESCALE,
+							std::ceil(height) * globals::SPRITESCALE
+						));
+						pObject = pObject->NextSiblingElement("object");
+					}
+				}
+			}
+			//other object groups
+			else if (stream.str() == "spawnpoints") {
+				XMLElement* pObject = pObjectGroup->FirstChildElement("object");
+				if (pObject != NULL) {
+					while (pObject) {
+						float x = pObject->FloatAttribute("x");
+						float y = pObject->FloatAttribute("y");
+						const char* name = pObject->Attribute("name");
+						std::stringstream stream;
+						stream << name;
+						if (stream.str() == "player") {
+							spawnPoint = Vector2(
+								std::ceil(x) * globals::SPRITESCALE,
+								std::ceil(y) * globals::SPRITESCALE);
+						}
+						pObject = pObject->NextSiblingElement("object");
+					}
+				}
+			}
+			pObjectGroup = pObjectGroup->NextSiblingElement("objectgroup");
 		}
 	}
 

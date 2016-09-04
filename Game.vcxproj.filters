@@ -39,6 +39,7 @@
     <ClInclude Include="level.h" />
     <ClInclude Include="tinyxml2.h" />
     <ClInclude Include="tile.h" />
+    <ClInclude Include="rectangle.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />
