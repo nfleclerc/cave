@@ -1,2 +1,14 @@
-﻿  Game.vcxproj -> C:\Users\Nathaniel\Documents\Visual Studio 2015\Projects\Game\Game\Debug\Game.exe
+﻿  level.cpp
+  Generating Code...
+  Compiling...
+  sprite.cpp
+c:\users\nathaniel\documents\visual studio 2015\projects\game\game\sprite.cpp(33): warning C4838: conversion from 'float' to 'int' requires a narrowing conversion
+  player.cpp
+  graphics.cpp
+  game.cpp
+  animatedsprite.cpp
+  Generating Code...
+  Skipping... (no relevant changes detected)
+  main.cpp
+  Game.vcxproj -> C:\Users\Nathaniel\Documents\Visual Studio 2015\Projects\Game\Game\Debug\Game.exe
   Game.vcxproj -> C:\Users\Nathaniel\Documents\Visual Studio 2015\Projects\Game\Game\Debug\Game.pdb (Partial PDB)

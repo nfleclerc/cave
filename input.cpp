@@ -6,13 +6,13 @@ void Input::beginNewFrame()
 	releasedKeys.clear();
 }
 
-void Input::keyUpEvent(const SDL_Event & event)
+void Input::keyUpEvent(const SDL_Event &event)
 {
 	releasedKeys[event.key.keysym.scancode] = true;
 	heldKeys[event.key.keysym.scancode] = false;
 }
 
-void Input::keyDownEvent(const SDL_Event & event)
+void Input::keyDownEvent(const SDL_Event &event)
 {
 	pressedKeys[event.key.keysym.scancode] = true;
 	heldKeys[event.key.keysym.scancode] = true;
