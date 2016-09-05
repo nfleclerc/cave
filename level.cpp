@@ -30,7 +30,10 @@ Level::~Level()
 
 void Level::update(int elapsedTime)
 {
-
+	for (int i = 0; i < animatedTiles.size(); i++)
+	{
+		animatedTiles.at(i).update(elapsedTime);
+	}
 }
 
 void Level::draw(Graphics & graphics)
@@ -38,6 +41,11 @@ void Level::draw(Graphics & graphics)
 	for (int i = 0; i < tileList.size(); i++)
 	{
 		tileList.at(i).draw(graphics);
+	}
+
+	for (int i = 0; i < animatedTiles.size(); i++)
+	{
+		animatedTiles.at(i).draw(graphics);
 	}
 }
 
@@ -106,6 +114,31 @@ void Level::loadMap(std::string mapName, Graphics &graphics) {
 			SDL_Texture* tex = SDL_CreateTextureFromSurface(graphics.getRenderer(), graphics.loadImage(ss.str()));
 			this->tilesets.push_back(Tileset(tex, firstgid));
 
+			//Get all of the animations for that tileset
+			XMLElement* pTileA = pTileset->FirstChildElement("tile");
+			if (pTileA != NULL) {
+				while (pTileA) {
+					AnimatedTileInfo ati;
+					ati.startTileId = pTileA->IntAttribute("id") + firstgid;
+					ati.tilesetsFirstGid = firstgid;
+					XMLElement* pAnimation = pTileA->FirstChildElement("animation");
+					if (pAnimation != NULL) {
+						while (pAnimation) {
+							XMLElement* pFrame = pAnimation->FirstChildElement("frame");
+							if (pFrame != NULL) {
+								while (pFrame) {
+									ati.tileIds.push_back(pFrame->IntAttribute("tileid") + firstgid);
+									ati.duration = pFrame->IntAttribute("duration");
+									pFrame = pFrame->NextSiblingElement("frame");
+								}
+							}
+							pAnimation = pAnimation->NextSiblingElement("animation");
+						}
+					}
+					this->animatedTileInfos.push_back(ati);
+					pTileA = pTileA->NextSiblingElement("tile");
+				}
+			}
 			pTileset = pTileset->NextSiblingElement("tileset");
 		}
 	}
@@ -139,11 +172,13 @@ void Level::loadMap(std::string mapName, Graphics &graphics) {
 							//Get the tileset for this specific gid
 							int gid = pTile->IntAttribute("gid");
 							Tileset tls;
+							int closest = 0;
 							for (int i = 0; i < this->tilesets.size(); i++) {
 								if (this->tilesets[i].firstgid <= gid) {
-									//This is the tileset we want
-									tls = this->tilesets.at(i);
-									break;
+									if (this->tilesets[i].firstgid > closest) {
+										closest = this->tilesets[i].firstgid;
+										tls = this->tilesets.at(i);
+									}
 								}
 							}
 
@@ -168,21 +203,34 @@ void Level::loadMap(std::string mapName, Graphics &graphics) {
 							Vector2 finalTilePosition = Vector2(xx, yy);
 
 							//Calculate the position of the tile in the tileset
-							int tilesetWidth, tilesetHeight;
-							SDL_QueryTexture(tls.texture, NULL, NULL, &tilesetWidth, &tilesetHeight);
-							int tsxx = gid % (tilesetWidth / tileWidth) - 1;
-							tsxx *= tileWidth;
-							int tsyy = 0;
-							int amt = (gid / (tilesetWidth / tileWidth));
-							tsyy = tileHeight * amt;
-							Vector2 finalTilesetPosition = Vector2(tsxx, tsyy);
+							Vector2 finalTilesetPosition = this->getTileSetPosition(tls, gid, tileWidth, tileHeight);
 
 							//Build the actual tile and add it to the level's tile list
-							Tile tile(tls.texture, Vector2(tileWidth, tileHeight),
-								finalTilesetPosition, finalTilePosition);
-							this->tileList.push_back(tile);
+							bool isAnimatedTile = false;
+							AnimatedTileInfo ati;
+							for (int i = 0; i < this->animatedTileInfos.size(); i++) {
+								if (this->animatedTileInfos.at(i).startTileId == gid) {
+									ati = this->animatedTileInfos.at(i);
+									isAnimatedTile = true;
+									break;
+								}
+							}
+							if (isAnimatedTile == true) {
+								std::vector<Vector2> tilesetPositions;
+								for (int i = 0; i < ati.tileIds.size(); i++) {
+									tilesetPositions.push_back(this->getTileSetPosition(tls, ati.tileIds.at(i),
+										tileWidth, tileHeight));
+								}
+								AnimatedTile tile(tilesetPositions, ati.duration,
+									tls.texture, Vector2(tileWidth, tileHeight), finalTilePosition);
+								this->animatedTiles.push_back(tile);
+							}
+							else {
+								Tile tile(tls.texture, Vector2(tileWidth, tileHeight),
+									finalTilesetPosition, finalTilePosition);
+								this->tileList.push_back(tile);
+							}
 							tileCounter++;
-
 							pTile = pTile->NextSiblingElement("tile");
 						}
 					}
@@ -249,20 +297,19 @@ void Level::loadMap(std::string mapName, Graphics &graphics) {
 						}
 
 						for (int i = 0; i < points.size(); i += 2) {
-							slopes.push_back(Slope(
+							this->slopes.push_back(Slope(
 								Vector2((p1.x + points.at(i < 2 ? i : i - 1).x) * globals::SPRITE_SCALE,
 								(p1.y + points.at(i < 2 ? i : i - 1).y) * globals::SPRITE_SCALE),
 								Vector2((p1.x + points.at(i < 2 ? i + 1 : i).x) * globals::SPRITE_SCALE,
 								(p1.y + points.at(i < 2 ? i + 1 : i).y) * globals::SPRITE_SCALE)
 							));
-					
 						}
 
 						pObject = pObject->NextSiblingElement("object");
 					}
 				}
 			}
-			else if (ss.str() == "spawnpoints") {
+			else if (ss.str() == "spawn points") {
 				XMLElement* pObject = pObjectGroup->FirstChildElement("object");
 				if (pObject != NULL) {
 					while (pObject) {
@@ -284,4 +331,17 @@ void Level::loadMap(std::string mapName, Graphics &graphics) {
 			pObjectGroup = pObjectGroup->NextSiblingElement("objectgroup");
 		}
 	}
+}
+
+Vector2 Level::getTileSetPosition(Tileset tileset, int gid, int tileWidth, int tileHeight)
+{
+	int tilesetWidth, tilesetHeight;
+	SDL_QueryTexture(tileset.texture, NULL, NULL, &tilesetWidth, &tilesetHeight);
+	int tsxx = gid % (tilesetWidth / tileWidth) - 1;
+	tsxx *= tileWidth;
+	int tsyy = 0;
+	int amt = ((gid - tileset.firstgid) / (tilesetWidth / tileWidth));
+	tsyy = tileHeight * amt;
+	Vector2 finalTilesetPosition = Vector2(tsxx, tsyy);
+	return finalTilesetPosition;
 }

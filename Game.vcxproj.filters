@@ -23,6 +23,7 @@
     <ClCompile Include="level.cpp" />
     <ClCompile Include="tinyxml2.cpp" />
     <ClCompile Include="tile.cpp" />
+    <ClCompile Include="animatedtile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graphics.h">
@@ -42,6 +43,7 @@
     <ClInclude Include="rectangle.h" />
     <ClInclude Include="utils.h" />
     <ClInclude Include="slope.h" />
+    <ClInclude Include="animatedtile.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

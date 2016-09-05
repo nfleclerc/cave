@@ -2,11 +2,12 @@
 #define LEVEL_H
 
 #include <string>
+#include <vector>
 #include "globals.h"
 #include "tile.h"
-#include <vector>
 #include "rectangle.h"
 #include "slope.h"
+#include "animatedtile.h"
 
 class Graphics;
 struct SDL_Texture;
@@ -33,7 +34,10 @@ private:
 	std::vector<Tileset> tilesets;
 	std::vector<Rectangle> collisionRects;
 	std::vector<Slope> slopes;
+	std::vector<AnimatedTile> animatedTiles;
+	std::vector<AnimatedTileInfo> animatedTileInfos;
 	void loadMap(std::string mapName, Graphics &graphics);
+	Vector2 getTileSetPosition(Tileset tileset, int gid, int tileWidth, int tileHeight);
 };
 
 struct Tileset {
