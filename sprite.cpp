@@ -18,7 +18,7 @@ Sprite::Sprite(Graphics &graphics, const std::string &filePath, int sourceX, int
 	if (spriteSheet == NULL) {
 		printf("\nError: Unable to load image\n");
 	}
-	boundingBox = Rectangle(x, y, width * globals::SPRITESCALE, height * globals::SPRITESCALE);
+	boundingBox = Rectangle(x, y, width * globals::SPRITE_SCALE, height * globals::SPRITE_SCALE);
 }
 
 Sprite::~Sprite()
@@ -27,12 +27,12 @@ Sprite::~Sprite()
 
 void Sprite::update()
 {
-	boundingBox = Rectangle(x, y, sourceRect.w * globals::SPRITESCALE, sourceRect.h * globals::SPRITESCALE);
+	boundingBox = Rectangle(x, y, sourceRect.w * globals::SPRITE_SCALE, sourceRect.h * globals::SPRITE_SCALE);
 }
 
 void Sprite::draw(Graphics & graphics, int x, int y)
 {
-	SDL_Rect destRect = { x, y, sourceRect.w * globals::SPRITESCALE, sourceRect.h * globals::SPRITESCALE};
+	SDL_Rect destRect = { x, y, sourceRect.w * globals::SPRITE_SCALE, sourceRect.h * globals::SPRITE_SCALE};
 	graphics.blitSurface(spriteSheet, &sourceRect, &destRect);
 }
 

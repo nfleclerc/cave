@@ -53,8 +53,8 @@ void AnimatedSprite::draw(Graphics & graphics, int x, int y)
 		SDL_Rect destRect;
 		destRect.x = x + offsets[currentAnimation].x;
 		destRect.y = y + offsets[currentAnimation].y;
-		destRect.w = sourceRect.w * globals::SPRITESCALE;
-		destRect.h = sourceRect.h * globals::SPRITESCALE;
+		destRect.w = sourceRect.w * globals::SPRITE_SCALE;
+		destRect.h = sourceRect.h * globals::SPRITE_SCALE;
 		SDL_Rect sourceRect = animations[currentAnimation][frameIndex];
 		graphics.blitSurface(spriteSheet, &sourceRect, &destRect);
 	}
