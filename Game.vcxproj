@@ -106,6 +106,7 @@
     <ClInclude Include="player.h" />
     <ClInclude Include="R:\Downloads\SDL2_image-devel-2.0.1-VC (2)\SDL2_image-2.0.1\include\SDL_image.h" />
     <ClInclude Include="rectangle.h" />
+    <ClInclude Include="slope.h" />
     <ClInclude Include="sprite.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="graphics.h" />
@@ -113,6 +114,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="tile.h" />
     <ClInclude Include="tinyxml2.h" />
+    <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />
@@ -127,10 +129,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="libjpeg-9.dll" />
+    <None Include="libpng16-16.dll" />
     <None Include="libtiff-5.dll" />
     <None Include="libwebp-4.dll" />
     <None Include="map1.tmx" />
-    <None Include="R:\Downloads\SDL2_image-devel-2.0.1-VC\SDL2_image-2.0.1\lib\x86\libpng16-16.dll" />
     <None Include="SDL2.dll" />
     <None Include="SDL2_image.dll" />
     <None Include="zlib1.dll" />

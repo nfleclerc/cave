@@ -1,10 +1,12 @@
 #include "player.h"
 #include "graphics.h"
+#include <iostream>
 
 namespace player_constants {
 	const float WALK_SPEED = 0.2f;
 	const float GRAVITY = 0.002f;
 	const float GRAVITY_CAP = 0.8f;
+	const float JUMP_SPEED = 0.7f;
 }
 
 Player::Player() {}
@@ -52,8 +54,12 @@ void Player::handleTileCollisions(std::vector<Rectangle>& others)
 			switch (collisionSide)
 			{
 			case sides::TOP:
-				y = others.at(i).getBottom() + 1;
 				dy = 0;
+				y = others.at(i).getBottom() + 1;
+				if (grounded) {
+					dx = 0;
+					x -= facing == RIGHT ? 1.0f : -1.0f;
+				}
 				break;
 			case sides::BOTTOM:
 				y = others.at(i).getTop() - boundingBox.getHeight() - 1;
@@ -72,6 +78,22 @@ void Player::handleTileCollisions(std::vector<Rectangle>& others)
 		}
 	}
 }
+
+void Player::handleSlopeCollisions(std::vector<Slope>& others)
+{
+	for (int i = 0; i < others.size(); i++)
+	{
+		int b = (others.at(i).getP1().y - (others.at(i).getSlope() * fabs(others.at(i).getP1().x)));
+		int centerx = boundingBox.getCenterX();
+		int newY = (others.at(i).getSlope() * centerx) + b - 8;
+		if (grounded) {
+			y = newY - boundingBox.getHeight();
+			grounded = true;
+		}
+	}
+}
+
+
 
 void Player::animationDone(std::string currentAnimation) {
 }
@@ -106,6 +128,15 @@ void Player::stopMoving()
 {
 	dx = 0;
 	playAnimation(facing == RIGHT ? "IdleRight" : "IdleLeft");
+}
+
+void Player::jump()
+{
+	if (grounded) {
+		dy = 0;
+		dy -= player_constants::JUMP_SPEED;
+		grounded = false;
+	}
 }
 
 

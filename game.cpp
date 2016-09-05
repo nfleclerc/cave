@@ -24,7 +24,6 @@ void Game::draw(Graphics &graphics)
 	graphics.clear();
 	level.draw(graphics);
 	player.draw(graphics);
-	std::cout << "ERROR: " << IMG_GetError() << std::endl;
 	graphics.flip();
 }
 
@@ -67,6 +66,9 @@ void Game::gameLoop()
 		if (!input.isKeyHeld(SDL_SCANCODE_LEFT) && !input.isKeyHeld(SDL_SCANCODE_RIGHT)) {
 			player.stopMoving();
 		}
+		if (input.wasKeyPressed(SDL_SCANCODE_UP)) {
+			player.jump();
+		}
 		const int CURRENT_TIME = SDL_GetTicks();
 		int ELAPSED_TIME = CURRENT_TIME - LAST_UPDATE_TIME;
 		update(std::min(ELAPSED_TIME, MAX_FRAME_TIME));
@@ -83,6 +85,10 @@ void Game::update(float elapsedTime)
 	std::vector<Rectangle> others;
 	if ((others = level.checkTileCollisions(player.getBoundingBox())).size() > 0) {
 		player.handleTileCollisions(others);
+	}
+	std::vector<Slope> otherSlopes;
+	if ((otherSlopes = level.checkSlopeCollisions(player.getBoundingBox())).size() > 0) {
+		player.handleSlopeCollisions(otherSlopes);
 	}
 
 }
